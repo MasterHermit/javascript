@@ -1,0 +1,207 @@
+function person(name){ //constructor
+    this.name=name; //here this is the instance of this function.
+    console.log(this);//person {name: 'fox'}
+                     //person {name: 'leo'}
+}
+
+const pone=new person("fox");
+const ptwo=new person("leo");
+//like this we can create as many objects as we want.
+//all the objects will have same property as of constructor.
+
+
+
+console.log(this); //global instance
+//Window {window: Window, self: Window, document: document, name: '', location: Location,…}
+
+
+=>How to get the age of a person
+
+class person {
+  constructor(name, dob) {
+    this.name = name;
+    this.dob = new Date(dob);
+
+    this.calAge = () => {
+      const diff = Date.now() - this.dob.getTime();
+
+      const ageDate = new Date(diff);
+
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
+    };
+  }
+}
+const pone = new person("fox", "03-04-2000");
+console.log(pone.calAge());
+const ptwo = new person("leo");
+
+Date.now() gets "The number of milliseconds between midnight, January 1, 1970, and the current date and time."
+
+Whereas, dateObj.getTime() "Returns the number of milliseconds between midnight, January 1, 1970 and the time value in the Date object."
+
+dateObj.getTime() requires you to use an object reference, 
+because it uses that to get the difference "between midnight, January 1, 1970 and the time value in the Date object."
+
+You don't need to reference an object with the Date.now() method because it doesn't use any object.
+ it simply gets the "number of milliseconds between midnight, January 1, 1970, and the current date and time."
+
+
+PROTOTYPE
+
+console.log("on");
+
+let val;
+
+const today = new Date().getFullYear().toString();
+val = today;
+
+function person(fname, lname, dob) {
+  this.fname = fname;
+  this.lname = lname;
+  this.dob = new Date(dob);
+}
+person.prototype.calAge = function () {
+  const diff = Date.now() - this.dob.getTime();
+
+  const ageDate = new Date(diff);
+
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+};
+person.prototype.Name = function () {
+  return `${this.fname} ${this.lname}`;
+};
+person.prototype.married = function (newLname) {
+  this.lname = newLname;
+};
+const pone = new person("fox", "lee", "03-04-2000");
+console.log(pone.calAge());
+const ptwo = new person("leo", " ho", "11-20-2001");
+console.log(ptwo.Name());
+ptwo.married("sen");
+console.log(ptwo.Name());
+
+
+RESULT
+
+on
+21
+leo  ho
+leo sen
+
+
+PROTOTYPAL INHERITANCE
+
+we can inherit the prototype methods of a constructor to another constructor.
+
+//inherit person protoype
+coustomer.prototype = Object.create(person.prototype);
+
+coustomer.prototype.constructor = coustomer;
+
+console.log("on");
+
+let val;
+
+function person(fname, lname) {
+  this.fname = fname;
+  this.lname = lname;
+}
+
+person.prototype.Name = function () {
+  return `${this.fname} ${this.lname}`;
+};
+person.prototype.greetings = function () {
+  return `hello ${p1.Name()} `;
+};
+const p1 = new person("master", "hemit");
+
+function coustomer(fname, lname, acc) {
+  person.call(this, fname, lname);
+
+  this.acc = acc;
+}
+
+//inherit person protoype
+coustomer.prototype = Object.create(person.prototype);
+
+coustomer.prototype.constructor = coustomer;
+const c1 = new coustomer("amit", "sahoo", "iron");
+console.log(c1);
+coustomer.prototype.greetings = function (acc) {
+  return `hello ${c1.Name()} you have a ${acc} acc. `;
+};
+console.log(c1.greetings());
+
+ES6 CLASS
+
+class person {
+  constructor(fname, lname, dob) {
+    this.fname = fname;
+    this.lname = lname;
+    this.dob = new Date(dob);
+  }
+  name() {
+    return `${this.fname} ${this.lname}`;
+  }
+  age() {
+    const dif = new Date(Date.now() - this.dob.getTime());
+    // const getdate = new Date(dif);
+    return Math.abs(dif.getUTCFullYear() - 1970);
+  }
+  marriage(newLname) {
+    this.lname = newLname;
+  }
+  static married(name) { //we can use method without creating object
+    return name;
+  }
+}
+
+const p1 = new person("john", "doe", "03-04-2000");
+console.log(p1.name());
+console.log(p1.age());
+p1.marriage("lee");
+console.log(person.married("jhon"));
+
+SUB CLASS
+
+class person {
+  constructor(fname, lname, dob) {
+    this.fname = fname;
+    this.lname = lname;
+    this.dob = new Date(dob);
+  }
+  name() {
+    return `${this.fname} ${this.lname}`;
+  }
+  age() {
+    const dif = new Date(Date.now() - this.dob.getTime());
+    // const getdate = new Date(dif);
+    return Math.abs(dif.getUTCFullYear() - 1970);
+  }
+  marriage(newLname) {
+    this.lname = newLname;
+  }
+  static married(name) {
+    return name;
+  }
+}
+
+const p1 = new person("john", "doe", "03-04-2000");
+
+//sub class
+
+class coustomer extends person {
+  constructor(fname, lname, dob, pno, acc) {
+    super(fname, lname, dob);
+    this.pno = pno;
+    this.acc = acc;
+  }
+  //method override
+  name() {
+    return `hello ${this.fname} ${this.lname} .you have a ${this.acc} acc.`;
+  }
+}
+
+const c1 = new coustomer("jhon", "doe", "03-04-2000", "62712537", "iron");
+
+console.log(c1.name()); //hello jhon doe .you have a iron acc.
