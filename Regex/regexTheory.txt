@@ -99,7 +99,7 @@ reTest(metaCharacter7,str);
 
 ************************************************************************************************************************************
 
-*CHARACTER SETS & QUANTIFIERS*
+                                                  *CHARACTER SETS & QUANTIFIERS*
 
 // BRACKETS [] :- character sets 
 const str='gray';
