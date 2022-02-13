@@ -161,4 +161,85 @@ function reTest(re,str){
     else console.log(`${str} did not matches ${re.source}`);
 }
 reTest(re,pString);
+
+******************************************************************************************************************************************************************
+
+                                                        *ASSERTIONS*
      
+     //SHORT HAND CHARACTER CLASSES 
+
+let re=/\w/;
+// any word chharacter - alphanumeric or _
+//['3', index: 0, input: '3x4x5x', groups: undefined]
+// 3x4x5x matches \w
+
+re=/\w+/;
+//more than one times
+//'3x4x5x', index: 0, input: '3x4x5x', groups: undefined]
+// 3x4x5x matches \w+
+
+re=/\W/;
+//anything other than word chharacter - alphanumeric or _ (!#$ etc.)
+//3x4x5x does not match  \W
+
+re=/\d/;
+//any digit matches
+
+re=/\d+/;
+//more than one digit matches
+
+re=/\D/;
+//any non digit matches
+
+re=/\s/;
+//matches whitespace
+//3x4x5x does not match  \s as there is no whitespace in str string
+
+re=/\S/;
+//matches non-whitespace
+
+re=/hell/i;
+//['hell', index: 0, input: 'hello world the hell', groups: undefined]
+//hello world the hell matches hell
+
+re=/hell\b/i;
+//it matches the word hell only hello will not be accounted for
+//['hell', index: 16, input: 'hello world the hell', groups: undefined]
+//hello world the hell matches hell\b
+//as you can notice previously index was 0 as t was matching with hello
+//now it matches exact word hell in index 16
+
+
+//ASSERTIONS
+
+re=/x(?=y)/i;
+//matches only if there is a y followed by x 
+//['x', index: 0, input: 'xyxx', groups: undefined]
+//xyxx matches x(?=y)
+
+re=/hello(?=world)/i;
+//['hello', index: 0, input: 'helloworld', groups: undefined]
+//helloworld matches hello(?=world)
+
+re=/hello(?=world)/i;
+//null
+//hello world does not match  hello(?=world)
+//doesnot matches as there is a white space after hello not World
+
+    
+
+
+const str='hello world';
+const res=re.exec(str);
+console.log(res);
+
+function reTest(re,str){
+    if(re.test(str)){
+        console.log(`${str} matches ${re.source}`);
+    }
+    else{
+        console.log(`${str} does not match  ${re.source}`);
+    }
+}
+
+reTest(re,str);
