@@ -1,4 +1,4 @@
-*SOME USEFUL FUNCTIONS OF REGEX*
+                                         *SOME USEFUL FUNCTIONS OF REGEX*
 let re;
 re=/hello/;//we use / / for regular expression.
 re=/hello/i; //to make it case insensitive.
@@ -42,3 +42,123 @@ console.log(searchRes); //['HELLo', index: 0, input: 'HELLo world', groups: unde
 
 ****************************************************************************************************************************************************************
 
+                                                        *METACHARACTER SYMBOLS*
+
+   const str="colr";
+//let re=/shree/i;
+//let res=re.exec(str);
+function reTest(re,str){
+    if(re.test(str))
+    console.log(`${str} matches ${re.source} `);
+    //shreeman narayana matches shree at index 0
+    else 
+    console.log(`${str} didn't matches ${re.source}`);
+
+}
+//reTest(re,str);
+
+//Meta Character Symbols
+
+metaCharacter=/^h/i;
+// ^h means it must start with h 
+// i to make it case insensitive H & h will be evaluated as same;
+//reTest(metaCharacter,str);
+//shreeman narayana didn't matches ^h 
+// as nothing starts with h 
+
+metaCharacter2=/^s/i;
+//reTest(metaCharacter2,str);
+//shreeman narayana matches ^s at index 0
+
+metaCharacter3=/a$/i;
+//s$ means it must end with s 
+// reTest(metaCharacter3,str);
+
+ metaCharacter4=/^shreeman narayana$/i;
+ //must start and with
+ //reTest(metaCharacter4,str);
+ //shreeman narayana matches ^shreeman narayana$ at index 0
+
+ metaCharacter5=/^shre.man/i;
+ // . means it will add a character it can be any charater
+ //so shreeman shretman shrexman all will be passed as matches 
+ //reTest(metaCharacter5,str)
+ //shreeman narayana matches ^shre.man at index 0
+
+ metaCharacter6=/shreeman*/i;
+ //* means it will add one more more character 
+ //so shreeeeman will also be passed as matches
+ //reTest(metaCharacter6,str);
+ //shreeman shreeman matches shreeman* at index 0
+
+metaCharacter7=/colo?u?r/i;
+// ? conditional all of three color colur and colr will be accepted
+reTest(metaCharacter7,str);
+//color matches colo?u?r 
+//colr matches colo?u?r 
+
+************************************************************************************************************************************
+
+*CHARACTER SETS & QUANTIFIERS*
+
+// BRACKETS [] :- character sets 
+const str='gray';
+let re=/gr[ae]y/i;
+//[ae] means from a and e if any value is present then it will match
+//output:- gray matches gr[ae]y
+re=/[^gf]ray/i; // matches anything except a g or f
+//gray did not matches [^gf]ray
+
+re=/[^tw]ray/i;
+//gray matches [^tw]ray
+
+re=/^[gf]ray/i; // starts with g or f
+//gray matches ^[gf]ray
+//^[gf]:-starts with g or f
+//[^gf]:-except g or f 
+
+re=/[0-9]ray/; //matches any digit 
+re=/[0-9][0-9]ray/; //matches any two digit no
+
+
+
+re=/[A-Z]ray/;  //matches any uppercase letter
+re=/[a-z]ray/;  //matches any lowercase letter
+re=/[A-za-z]/;  //matches any uppercase letter or lowercase letter 
+//gray matches [A-za-z]
+
+// BRACES {} :- Quantifiers
+
+const qString='Hellllo';
+
+re=/Hel{5}o/i; //it will cal {number} of times its prev character will be
+//Helllllo matches Hel{5}o
+
+re=/Hel{2,6}o/i; // if l occurs in between 2 to 6 times it will return true;
+//Helllllo matches Hel{2,6}o
+// if we remove all l except 1 it will pass false
+//Helo did not matches Hel{2,6}o
+
+re=/hel{2,}o/i; // atleast 2 times 
+
+//PARENTHESIS () :- Grouping
+
+const pString='3x4x5x';
+
+re=/([0-9]x){3}/i; 
+//Helo did not matches Hel{2,6}o
+
+re=/^([0-9]x){3}/
+//3x4x did not matches ^([0-9]x){3}
+
+re=/^([0-9]x){3}$/i;
+//3x4x5x matches ^([0-9]x){3}$
+
+
+
+function reTest(re,str){
+    if(re.test(str)) console.log(`${str} matches ${re.source}`);
+    else console.log(`${str} did not matches ${re.source}`);
+}
+reTest(re,pString);
+     
