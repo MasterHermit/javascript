@@ -1,0 +1,246 @@
+//STANDARD MODULE
+const UICtrl=(function(){
+    let text='hola mf';
+
+    const changeText=function(){
+        const element=document.querySelector('h1');
+        element.textContent=text;
+    }
+    return{
+        callChangeText:function(){
+            changeText();
+            console.log(text);
+        }
+    }
+
+})();
+
+
+UICtrl.callChangeText();
+
+//REVELING MODULAR PATTERN
+// let _data these are private variables
+
+const ItemCtrl=(function(){
+    let data=[];
+
+    function add(item){
+         data.push(item);
+        console.log('item Added...');
+    }
+    function get(id){
+       return data.find(item=>{
+           return item.id==id;
+       });
+
+    }
+    return{
+        add:add,
+        get:get
+    }
+})();
+
+ItemCtrl.add({id:1,name:"amit"});
+console.log(ItemCtrl.get(1));
+
+*********************************************************************************************************************
+
+
+//SINGLE PATTERN
+
+const singleton=(function(){
+    let instance;
+
+    function createInstance(){
+        const obj=new Object({name:'jhon'});
+        return obj;
+    }
+    return{
+        getInstance:function(){
+            if(!instance){
+                instance=createInstance();
+            }
+            return instance;
+        }
+    }
+
+})();
+
+const instanceA=singleton.getInstance();
+console.log( instanceA);
+const instanceB=singleton.getInstance();
+console.log( instanceB===instanceA);
+
+//output:-
+{name: 'jhon'}
+true // both instance are same instance
+//so we can not get more than one instance in singleton
+
+*******************************************************************************************************************
+// FACTORY PATTERN 
+
+function MemberFactory(){
+    this.createMember = function(name,type){
+        let member;
+        if(type==='simple'){
+            member=new simpleMembership(name);
+        }else if(type==='standard'){
+            member=new standardMembership(name);
+        }
+        else if(type==='premium'){
+            member=new premiumMembership(name);
+        }
+        member.type=type;
+         
+        member.define=function(){
+            console.log(`${this.name} (${this.type}): ${this.cost}`)
+        }
+        return member;
+          
+    }
+}
+
+const simpleMembership =function(name){
+    this.name=name;
+    this.cost='$5';
+}
+const standardMembership =function(name){
+    this.name=name;
+    this.cost='$10';
+}
+const premiumMembership =function(name){
+    this.name=name;
+    this.cost='$15';
+}
+
+const members=[];
+const factory=new MemberFactory();
+
+members.push(factory.createMember('jhon','simple'));
+members.push(factory.createMember('lee','standard'));
+members.push(factory.createMember('jay','premium'));
+
+members.forEach(function(member){
+    member.define();
+})
+
+**************************************************************************************************************************************
+// OBSERVER PATTERN 
+//SUBSCRIBE MANAGMENT
+
+function EventObserver(){
+    this.observers = [];
+
+}
+EventObserver.prototype={
+    subscribe: function(fn){
+        this.observers.push(fn);
+        console.log(`Subscribed to ${fn.name}`);
+    }, 
+    unsubscribe:function(fn){
+        this.observers=this.observers.filter(function(item){
+            if(item!==fn){
+                return item;
+            }
+        });
+        console.log(`Unsubscribed from ${fn.name}`);
+    }, 
+    fire: function(){
+        this.observers.forEach(function(item){
+            item.call();
+        })
+    }
+}
+
+const click=new EventObserver();
+
+const getMillis = function(){
+    console.log(`current time: ${new Date().getMilliseconds()}`)
+}
+const getSec=function(){
+    console.log(`current time: ${new Date().getUTCSeconds()}`)
+}
+
+//eventListners
+
+document.querySelector(".sub-ms").addEventListener("click",()=>{
+    click.subscribe(getMillis);
+})
+
+
+document.querySelector(".unsub-s").addEventListener("click",()=>{
+    click.unsubscribe(getMillis);
+})
+document.querySelector(".sub-s").addEventListener("click",()=>{
+    click.subscribe(getSec);
+})
+
+
+document.querySelector(".unsub-ms").addEventListener("click",()=>{
+    click.unsubscribe(getSec);
+})
+
+document.querySelector(".fire").addEventListener("click",()=>{
+    click.fire();
+})
+
+//ES6 USING CLASS
+
+
+class EventObserver {
+  constructor() {
+    this.observers = [];
+  }
+  subscribe(fn) {
+    this.observers.push(fn);
+    console.log(`Subscribed to ${fn.name}`);
+  }
+  unsubscribe(fn) {
+    this.observers = this.observers.filter(function (item) {
+      if (item !== fn) {
+        return item;
+      }
+    });
+    console.log(`Unsubscribed from ${fn.name}`);
+  }
+  fire() {
+    this.observers.forEach(function (item) {
+      item.call();
+    });
+  }
+}
+
+const click = new EventObserver();
+
+const getMillis = function () {
+  console.log(`current time: ${new Date().getMilliseconds()}`);
+};
+const getSec = function () {
+  console.log(`current time: ${new Date().getUTCSeconds()}`);
+};
+
+//eventListners
+
+document.querySelector(".sub-ms").addEventListener("click", () => {
+  click.subscribe(getMillis);
+});
+
+document.querySelector(".unsub-s").addEventListener("click", () => {
+  click.unsubscribe(getMillis);
+});
+document.querySelector(".sub-s").addEventListener("click", () => {
+  click.subscribe(getSec);
+});
+
+document.querySelector(".unsub-ms").addEventListener("click", () => {
+  click.unsubscribe(getSec);
+});
+
+document.querySelector(".fire").addEventListener("click", () => {
+  click.fire();
+});
+
+***************************************************************************************************************************************************************************************
+
+    
+
